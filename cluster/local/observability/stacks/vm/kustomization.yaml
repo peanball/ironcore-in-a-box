@@ -25,6 +25,8 @@ resources:
   - vmalert.yaml
   - vmrule-longterm.yaml
   - podscrapes.yaml
+  # storage (only matches when `make up-storage` added rook/ceph-volume-provider)
+  - podscrapes-storage.yaml
   - fluent-bit.yaml
   - fluent-bit-rbac.yaml
   - loki-vl-proxy.yaml

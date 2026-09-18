@@ -125,6 +125,63 @@ spec:
                 - source_labels: [__meta_kubernetes_pod_name]
                   target_label: pod
 
+            # --- storage (only active with `make up-storage`) ---
+            - job_name: ceph-volume-provider-8080
+              scrape_interval: 15s
+              scheme: https
+              tls_config:
+                insecure_skip_verify: true
+              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+              kubernetes_sd_configs:
+                - role: pod
+                  namespaces:
+                    names:
+                      - rook-ceph
+              relabel_configs:
+                - source_labels: [__meta_kubernetes_pod_phase]
+                  regex: (Failed|Succeeded)
+                  action: drop
+                - source_labels: [__meta_kubernetes_pod_label_control_plane]
+                  regex: controller-manager
+                  action: keep
+                - source_labels: [__meta_kubernetes_pod_container_port_number]
+                  regex: "8080"
+                  action: keep
+                - source_labels: [__meta_kubernetes_namespace]
+                  target_label: namespace
+                - source_labels: [__meta_kubernetes_pod_name]
+                  target_label: pod
+                - source_labels: [__meta_kubernetes_pod_container_name]
+                  target_label: container
+
+            - job_name: rook-ceph-mgr-9283
+              scrape_interval: 15s
+              scheme: http
+              kubernetes_sd_configs:
+                - role: pod
+                  namespaces:
+                    names:
+                      - rook-ceph
+              relabel_configs:
+                - source_labels: [__meta_kubernetes_pod_phase]
+                  regex: (Failed|Succeeded)
+                  action: drop
+                - source_labels: [__meta_kubernetes_pod_label_app]
+                  regex: rook-ceph-mgr
+                  action: keep
+                - source_labels: [__meta_kubernetes_pod_label_ceph_daemon_type]
+                  regex: mgr
+                  action: keep
+                - source_labels: [__meta_kubernetes_pod_container_port_number]
+                  regex: "9283"
+                  action: keep
+                - source_labels: [__meta_kubernetes_namespace]
+                  target_label: namespace
+                - source_labels: [__meta_kubernetes_pod_name]
+                  target_label: pod
+                - source_labels: [__meta_kubernetes_pod_container_name]
+                  target_label: container
+
       filelog:
         include:
           - /var/log/containers/*.log
