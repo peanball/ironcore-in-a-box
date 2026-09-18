@@ -13,3 +13,4 @@ kind: Kustomization
 resources:
   - namespaces.yaml
   - grafana
+  - perses

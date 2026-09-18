@@ -29,5 +29,6 @@ resources:
   - fluent-bit-rbac.yaml
   - loki-vl-proxy.yaml
   - grafana-datasource.yaml
+  - perses-datasource.yaml
   - grafana-dashboards.yaml
   - grafana-dashboards-paths.yaml
