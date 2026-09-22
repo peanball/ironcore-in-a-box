@@ -23,3 +23,4 @@ resources:
   - fluent-bit-rbac.yaml
   - grafana-datasource.yaml
   - perses-datasource.yaml
+  - perses-dashboards.yaml

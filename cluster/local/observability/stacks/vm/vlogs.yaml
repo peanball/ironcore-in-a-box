@@ -34,9 +34,11 @@ spec:
       cpu: 50m
       memory: 256Mi
     limits:
-      # OOM-killed at 512Mi under ~100-lines/s from a kind cluster because
-      # VL self-limits caches to 60% of cgroup memory and opens all small
-      # parts at startup. 1Gi is still modest for a testbed.
-      memory: 1Gi
+      # VL self-limits caches to 60% of cgroup memory and opens every small
+      # part at startup; fluent-bit ingests everything including Ceph OSD's
+      # rocksdb debug logs (each carrying thousands of unique field names),
+      # driving memory far above 1Gi. 2Gi for this testbed; a real deploy
+      # would filter those source streams instead of scaling up.
+      memory: 2Gi
   # Emit VictoriaLogs' own logs as JSON.
   logFormat: json

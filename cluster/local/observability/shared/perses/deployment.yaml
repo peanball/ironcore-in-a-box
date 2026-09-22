@@ -47,7 +47,11 @@ spec:
             - name: PERSES_PROVISIONING_FOLDERS_0
               value: /etc/perses/provisioning
             - name: PERSES_PROVISIONING_INTERVAL
-              value: 10m
+              value: 1m
+            # Watch the folder so ConfigMap updates land near-instantly
+            # instead of waiting for the reconcile interval.
+            - name: PERSES_PROVISIONING_ENABLE_WATCH
+              value: "true"
           resources:
             requests:
               cpu: 25m
@@ -75,6 +79,15 @@ spec:
                   optional: true
               - configMap:
                   name: perses-datasources-otel
+                  optional: true
+              - configMap:
+                  name: perses-dashboards-vm
+                  optional: true
+              - configMap:
+                  name: perses-dashboards-prom
+                  optional: true
+              - configMap:
+                  name: perses-dashboards-otel
                   optional: true
         - name: db
           emptyDir: {}

@@ -32,5 +32,6 @@ resources:
   - loki-vl-proxy.yaml
   - grafana-datasource.yaml
   - perses-datasource.yaml
+  - perses-dashboards.yaml
   - grafana-dashboards.yaml
   - grafana-dashboards-paths.yaml
